@@ -1,0 +1,38 @@
+# Code-only GitHub export for classification
+
+# Project materials not intended for GitHub upload
+.claude/
+.ipynb_checkpoints/
+__pycache__/
+archive/
+checkpoint/
+claude-config-backup/
+data/
+doc/
+docs/
+log/
+output/
+plan/
+reference/
+results/
+
+# Local notes and transient files
+findings.md
+progress.md
+task_plan.md
+RESULTS.md
+CLAUDE.md
+PixPin_*.png
+*.png
+*.pdf
+*.docx
+*.xlsx
+*.zip
+
+# Generated artifacts inside code
+code/**/.ipynb_checkpoints/
+code/**/__pycache__/
+code/**/*.pyc
+code/pipeline/output/
+code/pipeline/nohup.out
+code/pipeline/*.log
