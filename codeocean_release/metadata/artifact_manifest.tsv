@@ -1,0 +1,20 @@
+artifact_type	artifact_name	generator	inputs
+figure	Fig1_custom_architecture.png	static_asset	assets/Fig1_custom_architecture.png
+figure	Fig2_sota_comparison	plot_sota_comparison.py	output/data/*, output/unified_comparison_R30.csv
+figure	Fig3_supcon_ablation	plot_supcon_ablation.py	output/data/supcon_ablation_table.csv
+figure	Fig4_gate_weights	plot_gate_weights.py	output/*_gate_weights.csv
+figure	Fig5_pathway_scale	plot_pathway_scale.py	output/*_gate_weights.csv, output/data/pathway_enrichment_combined.csv, data/reference/cellchat_pathway_map.csv
+figure	Fig6_gate_entropy	plot_gate_entropy.py	output/*_gate_weights.csv
+figure	Fig7_tsne_umap	plot_tsne_umap.py	output/data/*_embeddings.npz, output/data/reichart_sample_conditions.csv
+figure	FigS_unified_comparison	plot_unified_comparison.py	output/data/expanded_sota_comparison_table.csv
+figure	FigS_calibration_metrics	plot_calibration.py	output/data/calibration_table.csv
+figure	FigS_calibration_reliability	plot_calibration.py	output/data/calibration_reliability.csv
+figure	FigS_evi_fidelity	plot_evi_fidelity.py	output/data/evi_fidelity_table.csv
+figure	FigS_efficiency	plot_efficiency_table.py	output/data/efficiency_table.csv
+figure	FigS_gate_sample_distribution	plot_gate_sample_distribution.py	output/*_gate_weights.csv, output/data/gate_sample_dispersion.csv
+figure	FigS_tsne_umap_velmeshev	plot_tsne_umap.py	output/data/*_embeddings.npz
+table	Table_2_gate_weights	generate_tables.py	output/data/gate_weights_summary.csv
+table	Table_S1_supcon_ablation	generate_tables.py	output/data/supcon_ablation_table.csv
+table	Table_S2_statistical_tests	generate_tables.py	output/data/statistical_tests.csv
+table	Table_S3_bootstrap_ci	generate_tables.py	output/data/bootstrap_ci_table.csv
+table	Table_S4_efficiency	generate_tables.py	output/data/efficiency_table.csv
