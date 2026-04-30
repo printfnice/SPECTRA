@@ -1,38 +1,27 @@
-# Code-only GitHub export for classification
+__pycache__/
+*.pyc
 
-# Project materials not intended for GitHub upload
+# Local result exports from dry runs
+results/exported_results/
+
+# Local workspace artifacts that should not be committed on the Code Ocean branch
 .claude/
 .ipynb_checkpoints/
-__pycache__/
 archive/
 checkpoint/
-claude-config-backup/
-data/
 doc/
 docs/
 log/
 output/
 plan/
 reference/
-results/
-
-# Local notes and transient files
+task_plan.md
 findings.md
 progress.md
-task_plan.md
 RESULTS.md
 CLAUDE.md
-PixPin_*.png
-*.png
-*.pdf
-*.docx
-*.xlsx
-*.zip
+PixPin_2026-03-31_12-28-51.png
 
-# Generated artifacts inside code
-code/**/.ipynb_checkpoints/
-code/**/__pycache__/
-code/**/*.pyc
-code/pipeline/output/
-code/pipeline/nohup.out
-code/pipeline/*.log
+# Packaged seed inputs: commit the tarball and manifest, ignore extracted copies
+data/seed_assets/spectra_output_seed/
+data/seed_assets/*.tar.gz

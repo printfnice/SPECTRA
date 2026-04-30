@@ -92,7 +92,7 @@ def plot_grouped_bar(pivot_mean, pivot_std):
         )
         if method == 'SPECTRA (E2E, SGDR)':
             for bar, val in zip(bars, means):
-                ax.text(bar.get_x() + bar.get_width() / 2, val + 0.012, f'{val:.4f}', ha='center', va='bottom', fontsize=7, color=ACCENT, fontweight='bold')
+                ax.text(bar.get_x() + bar.get_width() / 2, val + 0.012, f'{val:.4f}', ha='center', va='bottom', fontsize=7, color='#1f1f1f', fontweight='bold')
 
     style_axis(ax, grid_axis='y')
     ax.set_ylim(0.45, 1.06)

@@ -85,21 +85,25 @@ def plot_fig5():
         return
 
     piv = gate.pivot_table(index='pathway', columns='dataset', values='pathway_score', aggfunc='mean')
-    keep = piv.mean(axis=1).sort_values(ascending=False).head(TOP_N_PATHWAYS).index.tolist()
+    keep = piv.fillna(0).mean(axis=1).sort_values(ascending=False).head(TOP_N_PATHWAYS).index.tolist()
     piv = piv.loc[keep, DATASETS]
 
     fig, axes = plt.subplots(1, 2, figsize=(8.2, 5.8), gridspec_kw={'width_ratios': [1.3, 1.0]})
 
     ax = axes[0]
-    im = ax.imshow(piv.fillna(0).values, aspect='auto', cmap='Blues', vmin=0.0, vmax=float(np.nanmax(piv.values)))
+    blue_cmap = plt.cm.get_cmap('Blues').copy()
+    blue_cmap.set_bad(color='#E2E6EA')
+    masked = np.ma.masked_invalid(piv.values.astype(float))
+    vmax = float(np.nanmax(piv.values)) if np.isfinite(np.nanmax(piv.values)) else 1.0
+    im = ax.imshow(masked, aspect='auto', cmap=blue_cmap, vmin=0.0, vmax=vmax)
     ax.set_xticks(np.arange(len(DATASETS)))
     ax.set_xticklabels([DATASET_LABELS.get(d, d) for d in DATASETS], rotation=25, ha='right', fontsize=7)
     ax.set_yticks(np.arange(len(keep)))
     ax.set_yticklabels(keep, fontsize=6.6)
-    ax.set_title('Pathway score heatmap across cohorts', loc='left', fontsize=10)
+    ax.set_title('Mapped-pathway coverage weighted by cohort gate allocation', loc='left', fontsize=10)
     add_panel_label(ax, 'a')
     cbar = fig.colorbar(im, ax=ax, fraction=0.046, pad=0.03)
-    cbar.set_label('Gate-weighted pathway score', fontsize=8)
+    cbar.set_label('Dominant-scale intensity at mapped LR pairs', fontsize=8)
 
     ax2 = axes[1]
     add_panel_label(ax2, 'b')

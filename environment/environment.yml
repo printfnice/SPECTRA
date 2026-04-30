@@ -1,0 +1,13 @@
+name: spectra-codeocean
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - numpy
+  - pandas
+  - scipy
+  - scikit-learn
+  - matplotlib
+  - seaborn
+  - umap-learn
+  - pip

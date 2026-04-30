@@ -94,12 +94,25 @@ def plot_entropy_figure(stats_df, entropy_arrays):
 
     style_axis(ax_violin, grid_axis='y')
     add_panel_label(ax_violin, 'a')
-    add_reference_line(ax_violin, y=MAX_ENTROPY, label='uniform use of all three scales')
+    add_reference_line(ax_violin, y=MAX_ENTROPY, label=r'$\log_2 3$ theoretical maximum')
     ax_violin.set_xticks(range(len(DATASETS)))
     ax_violin.set_xticklabels(dataset_labels)
     ax_violin.set_ylabel('Gate entropy (bits)')
-    ax_violin.set_ylim(-0.03, 1.72)
-    ax_violin.set_title('Distribution of per-LR-pair scale specialization', loc='left', pad=10)
+    # Entropy is bounded above by log2(3); clip the visual range to avoid
+    # KDE tails being misread as values above the theoretical maximum.
+    ax_violin.set_ylim(-0.03, MAX_ENTROPY)
+    ax_violin.set_title('Distribution of retained sample-LR gate entropy', loc='left', pad=10)
+    ax_violin.text(
+        0.54,
+        0.94,
+        'Entropy summarizes cohort gate allocation at mapped LR pairs,\nnot pathway-specific predictive importance.',
+        transform=ax_violin.transAxes,
+        ha='left',
+        va='top',
+        fontsize=6.2,
+        color='#3a3a3a',
+        bbox=dict(boxstyle='round,pad=0.25', facecolor='white', edgecolor='#bdbdbd', linewidth=0.6, alpha=0.92),
+    )
 
     x = np.arange(len(DATASETS))
     norm_entropy = stats_df['norm_entropy'].values
