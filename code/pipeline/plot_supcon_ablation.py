@@ -13,12 +13,12 @@ sys.path.insert(0, str(_PIPELINE_DIR))
 from pub_style import ACCENT, FIGURES_DIR, DATA_DIR, set_pub_style, save_fig, style_axis, add_panel_label, finalize_figure
 
 ABLATION_CONFIGS = [
-    {'tag': 'baseline_R38', 'label': 'VIB + MC', 'auroc': 0.9264, 'std': 0.0494, 'folds': [0.8468, 0.9033, 0.9583, 0.9318, 0.9917]},
-    {'tag': 'supcon_w01', 'label': '+ SupCon 0.1', 'auroc': 0.9463, 'std': 0.0342, 'folds': [0.8957, 0.9304, 0.9712, 0.9394, 0.9947]},
-    {'tag': 'supcon_w02', 'label': '+ SupCon 0.2', 'auroc': 0.9566, 'std': 0.0325, 'folds': [0.8977, 0.9612, 0.9712, 0.9568, 0.9962]},
-    {'tag': 'supcon_w02_mixoff', 'label': '+ 0.2 / Mixup off', 'auroc': 0.9627, 'std': 0.0198, 'folds': [0.9445, 0.9487, 0.9758, 0.9492, 0.9955]},
-    {'tag': 'supcon_w03_mixoff', 'label': '+ 0.3 / Mixup off', 'auroc': 0.9641, 'std': 0.0204, 'folds': [0.9431, 0.9531, 0.9758, 0.9500, 0.9985]},
-    {'tag': 'sgdr', 'label': '+ SGDR final', 'auroc': 0.9883, 'std': 0.0121, 'folds': [0.9978, 0.9890, 0.9886, 0.9659, 1.0000]},
+    {'tag': 'baseline_R38', 'label': 'VIB', 'auroc': 0.9264, 'std': 0.0494, 'folds': [0.8468, 0.9033, 0.9583, 0.9318, 0.9917]},
+    {'tag': 'supcon_w01', 'label': '+SC0.1', 'auroc': 0.9463, 'std': 0.0342, 'folds': [0.8957, 0.9304, 0.9712, 0.9394, 0.9947]},
+    {'tag': 'supcon_w02', 'label': '+SC0.2', 'auroc': 0.9566, 'std': 0.0325, 'folds': [0.8977, 0.9612, 0.9712, 0.9568, 0.9962]},
+    {'tag': 'supcon_w02_mixoff', 'label': '+SC0.2/-Mix', 'auroc': 0.9627, 'std': 0.0198, 'folds': [0.9445, 0.9487, 0.9758, 0.9492, 0.9955]},
+    {'tag': 'supcon_w03_mixoff', 'label': '+SC0.3/-Mix', 'auroc': 0.9641, 'std': 0.0204, 'folds': [0.9431, 0.9531, 0.9758, 0.9500, 0.9985]},
+    {'tag': 'sgdr', 'label': '+WR', 'auroc': 0.9883, 'std': 0.0121, 'folds': [0.9978, 0.9890, 0.9886, 0.9659, 1.0000]},
 ]
 CELLCHAT_BASELINE = 0.9655
 COLORS = ['#B9B9B9', '#A7C5DD', '#7EA9C9', '#5984B0', '#406B97', ACCENT]

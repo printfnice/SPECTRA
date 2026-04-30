@@ -28,11 +28,11 @@ from pub_style import (
 
 DATASETS = ['kuppe', 'carraro', 'habermann', 'velmeshev', 'reichart']
 BIO_ANNOTATIONS = {
-    'kuppe': 'Gene-dominant with measurable cell-type contribution.',
-    'carraro': 'Pronounced pathway preference in cystic-fibrosis signaling.',
-    'habermann': 'Pathway-scale fibrosis programs dominate the gate.',
-    'velmeshev': 'Near-exclusive pathway control across prioritized LR pairs.',
-    'reichart': 'Gene-led control with a secondary pathway component.',
+    'kuppe': 'Gene-scale dominant gate with measurable cell-type contribution.',
+    'carraro': 'Pathway-scale gate allocation in the cystic-fibrosis cohort.',
+    'habermann': 'Pathway-scale features dominate the learned gate in this fibrosis cohort.',
+    'velmeshev': 'Near-exclusive pathway-scale gate allocation in this cohort.',
+    'reichart': 'Gene-scale gate dominant with a secondary pathway component.',
 }
 
 
@@ -85,7 +85,8 @@ def plot_gate_fig4(summary):
             zorder=3,
         )
         for xi, (v, b) in enumerate(zip(vals, bottoms)):
-            if v >= 0.10:
+            if v >= 0.035:
+                text_color = 'white' if v >= 0.11 else '#1f1f1f'
                 ax.text(
                     xi,
                     b + v / 2,
@@ -93,7 +94,7 @@ def plot_gate_fig4(summary):
                     ha='center',
                     va='center',
                     fontsize=7,
-                    color='white',
+                    color=text_color,
                     fontweight='bold',
                 )
         handles.append(mpatches.Patch(facecolor=SCALE_COLORS[scale], label=SCALE_LABELS[scale]))

@@ -62,11 +62,9 @@ def plot_comparison_heatmap(pivot):
     from matplotlib.colors import LinearSegmentedColormap
 
     set_pub_style()
-    fig, axes = plt.subplots(1, 2, figsize=(7.8, 5.6), gridspec_kw={'width_ratios': [3.0, 1.0]})
-    ax, ax2 = axes
+    fig, ax = plt.subplots(figsize=(6.2, 5.6))
     data = pivot.values.astype(float)
     blue_cmap = LinearSegmentedColormap.from_list('nat_blues', ['#F4F8FC', '#AFC6DF', '#5F88B5', '#244A73'])
-    highlight_blue = '#2D5F8B'
     text_blue = '#1F4E79'
     im = ax.imshow(data, cmap=blue_cmap, vmin=0.50, vmax=1.00, aspect='auto')
 
@@ -75,7 +73,7 @@ def plot_comparison_heatmap(pivot):
             v = data[i, j]
             if np.isnan(v):
                 continue
-            ax.text(j, i, f'{v:.4f}', ha='center', va='center', fontsize=7, color='white' if v > 0.78 else '#12304A', fontweight='bold' if pivot.index[i] == 'SPECTRA (E2E, SGDR)' else 'normal')
+            ax.text(j, i, f'{v:.3f}', ha='center', va='center', fontsize=7, color='white' if v > 0.78 else '#12304A', fontweight='bold' if pivot.index[i] == 'SPECTRA (E2E, SGDR)' else 'normal')
 
     ax.set_xticks(range(len(DATASETS)))
     ax.set_xticklabels([DATASET_LABELS[d] for d in DATASETS])
@@ -87,26 +85,9 @@ def plot_comparison_heatmap(pivot):
             tick.set_fontweight('bold')
     ax.set_title('Expanded original-protocol benchmark', loc='left', pad=10)
     add_panel_label(ax, 'a')
-
-    # Match panel (b) to the top-to-bottom visual order shown in panel (a).
-    display_methods = list(reversed(list(pivot.index)))
-    means = [np.nanmean(pivot.loc[m, DATASETS].values) for m in display_methods]
-    colors = [highlight_blue if m == 'SPECTRA (E2E, SGDR)' else '#9DB1C9' for m in display_methods]
-    ax2.barh(range(len(means)), means, color=colors, height=0.72)
-    for i, (v, m) in enumerate(zip(means, display_methods)):
-        ax2.text(v + 0.006, i, f'{v:.4f}', va='center', fontsize=7, color=text_blue if m == 'SPECTRA (E2E, SGDR)' else '#425466', fontweight='bold' if m == 'SPECTRA (E2E, SGDR)' else 'normal')
-    ax2.set_yticks(range(len(means)))
-    ax2.set_yticklabels([''] * len(means))
     ax.invert_yaxis()
-    ax2.invert_yaxis()
-    ax2.set_xlim(0.5, 1.05)
-    ax2.set_xlabel('Mean AUROC')
-    ax2.set_title('Across datasets (original protocol)', loc='left', pad=10)
-    add_panel_label(ax2, 'b')
-    for spine in ['top', 'right', 'left']:
-        ax2.spines[spine].set_visible(False)
     fig.colorbar(im, ax=ax, fraction=0.035, pad=0.02)
-    finalize_figure(fig, left=0.12, right=0.97, top=0.92, bottom=0.10, wspace=0.15)
+    finalize_figure(fig, left=0.19, right=0.96, top=0.92, bottom=0.10)
     save_fig(fig, FIGURES_DIR / 'FigS_unified_comparison')
     plt.close(fig)
 
