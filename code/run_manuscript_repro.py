@@ -171,7 +171,13 @@ def _collect_results(results_dir: Path) -> None:
             dst = results_dir / rel
             dst.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(src, dst)
-    shutil.copy2(RUN_LOG, results_dir / "run_log.txt")
+    run_log_dst = results_dir / "run_log.txt"
+    try:
+        same_target = RUN_LOG.resolve() == run_log_dst.resolve()
+    except FileNotFoundError:
+        same_target = False
+    if not same_target:
+        shutil.copy2(RUN_LOG, run_log_dst)
 
 
 def main() -> None:
