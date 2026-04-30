@@ -4,6 +4,7 @@ import os
 import shutil
 import subprocess
 import sys
+import tarfile
 from pathlib import Path
 
 
@@ -15,6 +16,11 @@ TABLES_DIR = OUTPUT_DIR / "tables"
 RESULTS_DIR = Path(os.environ.get("SPECTRA_RESULTS_DIR", "/results"))
 DEFAULT_LOCAL_RESULTS = ROOT / "results" / "exported_results"
 SEED_OUTPUT_DIR = Path(os.environ.get("SPECTRA_SEED_OUTPUT_DIR", "/data/spectra_output_seed"))
+LOCAL_SEED_TARBALLS = [
+    ROOT / "data" / "seed_assets" / "spectra_output_seed.tar.gz",
+    ROOT / "data" / "spectra_output_seed.tar.gz",
+]
+LOCAL_EXTRACTED_SEED_DIR = ROOT / "data" / "_staged_seed_output"
 RUN_LOG = ROOT / "results" / "run_log.txt"
 
 PLOT_SCRIPTS = [
@@ -94,14 +100,42 @@ def _stage_static_inputs() -> None:
     shutil.copy2(fig1, FIGURES_DIR / "Fig1_custom_architecture.png")
 
 
-def _stage_seed_outputs() -> None:
-    if not SEED_OUTPUT_DIR.exists():
-        raise FileNotFoundError(
-            f"Seed output asset not found at {SEED_OUTPUT_DIR}. "
-            "Attach a Code Ocean Data Asset and set SPECTRA_SEED_OUTPUT_DIR if needed."
-        )
+def _extract_local_seed_tarball(seed_tarball: Path) -> Path:
+    if LOCAL_EXTRACTED_SEED_DIR.exists():
+        shutil.rmtree(LOCAL_EXTRACTED_SEED_DIR)
+    LOCAL_EXTRACTED_SEED_DIR.mkdir(parents=True, exist_ok=True)
 
-    for item in SEED_OUTPUT_DIR.iterdir():
+    with tarfile.open(seed_tarball, "r:gz") as tar:
+        tar.extractall(LOCAL_EXTRACTED_SEED_DIR)
+
+    extracted_root = LOCAL_EXTRACTED_SEED_DIR / "spectra_output_seed"
+    if extracted_root.exists():
+        return extracted_root
+    return LOCAL_EXTRACTED_SEED_DIR
+
+
+def _resolve_seed_source() -> Path:
+    if SEED_OUTPUT_DIR.exists():
+        if SEED_OUTPUT_DIR.is_dir():
+            return SEED_OUTPUT_DIR
+        if SEED_OUTPUT_DIR.is_file() and SEED_OUTPUT_DIR.suffixes[-2:] == [".tar", ".gz"]:
+            return _extract_local_seed_tarball(SEED_OUTPUT_DIR)
+
+    for candidate in LOCAL_SEED_TARBALLS:
+        if candidate.exists():
+            return _extract_local_seed_tarball(candidate)
+
+    raise FileNotFoundError(
+        "Seed manuscript outputs were not found. "
+        "Provide a directory via SPECTRA_SEED_OUTPUT_DIR or place "
+        "spectra_output_seed.tar.gz under data/seed_assets/."
+    )
+
+
+def _stage_seed_outputs() -> None:
+    seed_source = _resolve_seed_source()
+
+    for item in seed_source.iterdir():
         if item.name in {"figures", "tables"}:
             continue
         dst = OUTPUT_DIR / item.name

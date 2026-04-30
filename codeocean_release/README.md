@@ -4,7 +4,7 @@ This directory is a Code Ocean-specific release package for the `SPECTRA` manusc
 
 ## Purpose
 
-This package is designed to regenerate manuscript-facing figures and tables from attached seed assets. It is not the full training workspace and does not attempt to rerun the complete experimental suite from raw cohort data.
+This package is designed to regenerate manuscript-facing figures and tables from packaged seed inputs. It is not the full training workspace and does not attempt to rerun the complete experimental suite from raw cohort data.
 
 ## Layout
 
@@ -19,6 +19,8 @@ code/
 data/
   README.md
   reference/cellchat_pathway_map.csv
+  seed_assets/
+    spectra_output_seed.tar.gz
 results/
   README.md
 environment/
@@ -35,22 +37,30 @@ run_capsule.sh
 1. Create a new Capsule.
 2. Import this directory from Git or upload it manually.
 3. Use `environment/environment.yml` as the runtime environment.
-4. Attach one Data Asset containing the seed manuscript outputs.
-5. Mount that asset at:
-
-```text
-/data/spectra_output_seed
-```
-
-If you use a different mount path, set:
+4. Upload `spectra_output_seed.tar.gz` into the Capsule `data/seed_assets/` directory.
+5. Run:
 
 ```bash
-SPECTRA_SEED_OUTPUT_DIR=/data/<your-asset-name>
+bash run_capsule.sh
 ```
 
-## Required Data Asset contents
+## Optional external seed directory
 
-The mounted seed asset should mirror the subset of the current research `output/` directory that is needed as plotting/table input.
+If you later use a Code Ocean Data Asset or another mounted directory, set:
+
+```bash
+SPECTRA_SEED_OUTPUT_DIR=/data/<your-seed-directory>
+```
+
+The runtime will prefer that directory when it exists. Otherwise it will fall back to:
+
+```text
+data/seed_assets/spectra_output_seed.tar.gz
+```
+
+## Required seed contents
+
+The seed package should mirror the subset of the current research `output/` directory that is needed as plotting/table input.
 
 Minimum structure:
 
@@ -73,17 +83,9 @@ spectra_output_seed/
   pathway_enrichment_velmeshev.csv
 ```
 
-## Run
-
-Code Ocean entrypoint:
-
-```bash
-bash run_capsule.sh
-```
-
 This run will:
 
-1. Stage the seed output asset into local `output/`
+1. Stage the seed manuscript outputs into local `output/`
 2. Copy the static Fig.1 architecture image
 3. Regenerate manuscript-facing figures and tables
 4. Export selected artifacts into `/results`
